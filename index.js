@@ -31,7 +31,9 @@ app.get('/', (req, res) => {
 // Import routes
 const productRoutes = require('./routes/products');
 const favoriteRoutes = require('./routes/favorites');
+const sortRoutes = require('./routes/sort');
 
 // Use routes
 app.use('/api/products', productRoutes);
 app.use('/api/favorites', favoriteRoutes);
+app.use('/api/sort', sortRoutes);
