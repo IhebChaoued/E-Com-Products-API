@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema({
   },
   productColor: {
     type: String,
-    required: true
+    default: "No Colors Option"
   },
   productDescription: {
     type: String,
@@ -33,6 +33,9 @@ const productSchema = new mongoose.Schema({
   productStock: {
     type: Number,
     required: true
+  },
+  productDiscount: {
+    type: Number,
   }
 });
 

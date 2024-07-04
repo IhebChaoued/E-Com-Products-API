@@ -22,16 +22,25 @@ exports.getProductById = async (req, res) => {
 
 // Create a new product
 exports.createProduct = async (req, res) => {
-  const product = new Product({
+  const productData = {
     productName: req.body.productName,
     categoryId: req.body.categoryId,
     productPrice: req.body.productPrice,
     productPicture: req.body.productPicture,
-    productColor: req.body.productColor,
     productDescription: req.body.productDescription,
     productRate: req.body.productRate,
-    productStock: req.body.productStock
-  });
+    productStock: req.body.productStock,
+  };
+
+  // Add optional fields if provided
+  if (req.body.productColor) {
+    productData.productColor = req.body.productColor;
+  }
+  if (req.body.productDiscount !== undefined) {
+    productData.productDiscount = req.body.productDiscount;
+  }
+
+  const product = new Product(productData);
 
   try {
     const newProduct = await product.save();
@@ -40,6 +49,7 @@ exports.createProduct = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
 
 // Update a product
 exports.updateProduct = async (req, res) => {
