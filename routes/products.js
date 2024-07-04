@@ -8,9 +8,6 @@ router.get('/', productController.getAllProducts);
 // Get product by ID
 router.get('/:id', productController.getProductById);
 
-// Get related products (randomized)
-router.get('/:id/related', productController.getRelatedProducts);
-
 // Create a new product
 router.post('/', productController.createProduct);
 

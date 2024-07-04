@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 // Get all products
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate('categoryId');
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -13,19 +13,8 @@ exports.getAllProducts = async (req, res) => {
 // Get product by ID
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate('relatedProducts');
+    const product = await Product.findById(req.params.id).populate('categoryId');
     res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// Get related products (randomized)
-exports.getRelatedProducts = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id).populate('relatedProducts');
-    const relatedProducts = product.relatedProducts.sort(() => 0.5 - Math.random()).slice(0, 4);
-    res.status(200).json(relatedProducts);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -34,12 +23,14 @@ exports.getRelatedProducts = async (req, res) => {
 // Create a new product
 exports.createProduct = async (req, res) => {
   const product = new Product({
-    name: req.body.name,
-    price: req.body.price,
-    images: req.body.images,
-    description: req.body.description,
-    rating: req.body.rating,
-    relatedProducts: req.body.relatedProducts
+    productName: req.body.productName,
+    categoryId: req.body.categoryId,
+    productPrice: req.body.productPrice,
+    productPicture: req.body.productPicture,
+    productColor: req.body.productColor,
+    productDescription: req.body.productDescription,
+    productRate: req.body.productRate,
+    productStock: req.body.productStock
   });
 
   try {
@@ -53,7 +44,7 @@ exports.createProduct = async (req, res) => {
 // Update a product
 exports.updateProduct = async (req, res) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('categoryId');
     res.status(200).json(updatedProduct);
   } catch (err) {
     res.status(400).json({ message: err.message });
